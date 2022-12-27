@@ -32,8 +32,8 @@ jobs:
           platforms: linux/amd64,linux/ppc64le,linux/s390x
           push: false
           tags: |
-            ${{ secrets.CSIBLOCK_DOCKER_REGISTRY_USERNAME }}/ibm-block-csi-volume-group-operator:test_volume_group
-            ${{ secrets.CSIBLOCK_DOCKER_REGISTRY_USERNAME }}/ibm-block-csi-volume-group-operator:test_volume_group2
+            ibm-block-csi-volume-group-operator:test_volume_group
+            ibm-block-csi-volume-group-operator:test_volume_group2
           file: Dockerfile
           cache-from: type=local,src=/tmp/.buildx-volume-group-operator
           cache-to: type=local,dest=/tmp/.buildx-new-volume-group-operator
