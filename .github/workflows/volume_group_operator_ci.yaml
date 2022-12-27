@@ -29,8 +29,8 @@ jobs:
           platforms: linux/amd64,linux/ppc64le,linux/s390x
           push: false
           tags: |
-            ${{ volume_group_operator_repository }}:test_volume_group
-            ${{ volume_group_operator_repository }}:test_volume_group2
+            $volume_group_operator_repository:test_volume_group
+            $volume_group_operator_repository:test_volume_group2
           file: Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
