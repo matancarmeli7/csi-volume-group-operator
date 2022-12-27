@@ -1,6 +1,5 @@
 
 name: volume-group-operator-ci
-run-name: Branch - ${{ github.ref_name }}, Name - ${{ github.workflow }}
 on:
   push:
     branches:
