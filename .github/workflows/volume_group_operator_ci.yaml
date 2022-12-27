@@ -7,11 +7,6 @@ on:
       - main
   pull_request:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: false
 jobs:
   build_and_push_images:
     name: "Build and push images"
