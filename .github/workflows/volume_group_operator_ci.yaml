@@ -23,8 +23,8 @@ jobs:
       PRODUCTION: "${{ inputs.production }}"
       BUILD_NUMBER: "${{ github.run_number }}"
       REGISTRY: quay.io/csiblock/
-      PROD_REPOSITORY: volume-group-opreator
-      STAGING_REPOSITORY: volume-group-opreator-staging
+      PROD_REPOSITORY: volume-group-operator
+      STAGING_REPOSITORY: volume-group-operator-staging
       IMAGE_VERSION: '1.11.0'
     steps:
        - name: Checkout code
