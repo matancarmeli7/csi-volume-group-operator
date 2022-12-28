@@ -35,8 +35,8 @@ jobs:
          run: |
            build/ci/github_actions/setup_ci_dependencies.sh
     outputs:
-      volume_group_image_specific_tag: "${{ steps.setup_dependencies.outputs.volume_group_image_specific_tag }}"
-      volume_group_image_branch_tag: "${{ steps.setup_dependencies.outputs.volume_group_image_branch_tag }}"
+      specific_tag: "${{ steps.setup_dependencies.outputs.specific_tag }}"
+      branch_tag: "${{ steps.setup_dependencies.outputs.branch_tag }}"
 
   build_and_push_images:
     name: "Build and push images"
@@ -51,15 +51,16 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2
-      - name: Docker meta
+      - name: Docker staging meta
+        if: ${{ ! inputs.production }}
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: |
             quay.io/csiblock/volume-group-opreator-staging
           tags: |
-            type=raw,value=latest
-            type=raw,value=1.11.0_b44_6728be38_develop
+            type=raw,value=${{ needs.prepare_env.outputs.branch_tag }}
+            type=raw,value=${{ needs.prepare_env.outputs.specific_tag }}
           labels: |
             commit=${{ github.sha }}
       - name: Login to quay.io
@@ -81,8 +82,8 @@ jobs:
           cache-to: type=gha,mode=max
       - name: save image names
         run: |
-          echo ${{ needs.prepare_env.outputs.volume_group_image_specific_tag }} >> /tmp/images.txt
-          echo ${{ needs.prepare_env.outputs.volume_group_image_branch_tag }} >> /tmp/images.txt
+          echo ${{ needs.prepare_env.outputs.specific_tag }} >> /tmp/images.txt
+          echo ${{ needs.prepare_env.outputs.branch_tag }} >> /tmp/images.txt
       - uses: actions/upload-artifact@v3
         with:
           name: images
