@@ -59,7 +59,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ REGISTRY }}/${{ needs.prepare_env.outputs.repository }}
+            ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }}
           tags: |
             type=raw,value=${{ needs.prepare_env.outputs.branch_tag }}
             type=raw,value=${{ needs.prepare_env.outputs.specific_tag }}
