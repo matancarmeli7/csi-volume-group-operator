@@ -6,6 +6,9 @@ on:
       - develop
       - main
   pull_request:
+    types: 
+      - opened
+      - reopened
   workflow_dispatch:
     inputs:
       production:
