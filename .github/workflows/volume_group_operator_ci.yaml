@@ -22,7 +22,7 @@ jobs:
     env:
       PRODUCTION: "${{ inputs.production }}"
       BUILD_NUMBER: "${{ github.run_number }}"
-      REGISTRY: 'quay.io/${{ secrets.CSIBLOCK_DOCKER_REGISTRY_USERNAME }}/'
+      REGISTRY: quay.io/csiblock/
       PROD_REPOSITORY: volume-group-opreator
       STAGING_REPOSITORY: volume-group-opreator-staging
       IMAGE_VERSION: '1.11.0'
