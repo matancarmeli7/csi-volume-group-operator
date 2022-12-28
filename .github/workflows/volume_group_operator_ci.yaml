@@ -9,10 +9,6 @@ on:
     types: 
       - opened
       - reopened
-  issue_comment:                                     
-    types:
-      - created
-    if: contains(toLower(github.event.comment.body), '/test')
   workflow_dispatch:
     inputs:
       production:
@@ -67,3 +63,11 @@ jobs:
           file: Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: save image names
+        run: |
+          echo ${{ needs.prepare_env.outputs.volume_group_image_specific_tag }} >> /tmp/images.txt
+          echo ${{ needs.prepare_env.outputs.volume_group_image_branch_tag }} >> /tmp/images.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: images
+          path: /tmp/images.txt
