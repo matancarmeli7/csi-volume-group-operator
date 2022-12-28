@@ -21,5 +21,5 @@ if [ "$PRODUCTION" = true ] ; then
   volume_group_image_branch_tag=${prod_repository}:${image_version}
 fi
 
-echo "::set-output name=volume_group_image_specific_tag::${volume_group_image_specific_tag}"
-echo "::set-output name=volume_group_image_branch_tag::${volume_group_image_branch_tag}"
+echo "volume_group_image_specific_tag=${volume_group_image_specific_tag}" >> $GITHUB_OUTPUT
+echo "volume_group_image_branch_tag=${volume_group_image_branch_tag}" >> $GITHUB_OUTPUT
