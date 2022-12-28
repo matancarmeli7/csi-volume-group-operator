@@ -43,7 +43,7 @@ jobs:
     name: "Build and push images"
     runs-on: ubuntu-latest
     env:
-      REGISTRY: quay.io/csiblock/
+      REGISTRY: quay.io/csiblock
     needs:
       - prepare_env
     steps:
