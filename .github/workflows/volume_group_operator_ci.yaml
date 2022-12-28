@@ -85,7 +85,7 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             VERSION: ${{ env.IMAGE_VERSION }}
-            BUILD_NUMBER: ${{ env.GITHUB_RUN_NUMBER }}
+            BUILD_NUMBER: ${{ github.run_number }}
       - name: save image names
         run: |
           echo ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }} >> /tmp/images.txt
