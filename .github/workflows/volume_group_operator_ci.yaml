@@ -71,4 +71,5 @@ jobs:
         with:
           name: images
           path: /tmp/images.txt
+          type: raw
           retention-days: 7
