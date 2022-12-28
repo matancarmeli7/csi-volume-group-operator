@@ -11,7 +11,7 @@ specific_tag="${image_version}_b${build_number}_${commit_hash}_${triggering_bran
 volume_group_image_specific_tag=${staging_repository}:${specific_tag}
 
 
-if [ "$triggering_branch" == "develop" ]; then
+if [ "$triggering_branch" == "test" ]; then
   volume_group_image_branch_tag=${staging_repository}:latest
 else
   volume_group_image_branch_tag=${staging_repository}:${triggering_branch}
