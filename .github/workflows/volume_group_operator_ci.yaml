@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
     inputs:
       production:
-        description: 'Whether to push the image to the production registry or the staging registry'
+        description: 'Click the checkbox for production images'
         default: false
         type: boolean
         required: false
