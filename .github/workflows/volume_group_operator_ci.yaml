@@ -59,7 +59,7 @@ jobs:
             quay.io/csiblock/volume-group-opreator-staging
           tags: |
             type=raw,value=latest
-            type=raw,value=1.11.0_b44_728be38_develop
+            type=raw,value=1.11.0_b44_6728be38_develop
           labels: |
             commit=${{ github.sha }}
       - name: Login to quay.io
