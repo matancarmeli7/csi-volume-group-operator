@@ -55,9 +55,6 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: |
-            ${{ needs.prepare_env.outputs.volume_group_image_specific_tag }}
-            ${{ needs.prepare_env.outputs.volume_group_image_branch_tag }}
           labels: |
             commit=${{ github.sha }}
       - name: Login to quay.io
@@ -73,7 +70,9 @@ jobs:
           platforms: linux/amd64,linux/ppc64le,linux/s390x
           push: true
           labels: ${{ steps.meta.outputs.labels }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ needs.prepare_env.outputs.volume_group_image_specific_tag }}
+            ${{ needs.prepare_env.outputs.volume_group_image_branch_tag }}
           file: Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
