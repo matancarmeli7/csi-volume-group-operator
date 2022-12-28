@@ -13,13 +13,33 @@ on:
         default: 'false'
         required: false
 jobs:
+  prepare_env:
+   name: "Prepare env"
+   runs-on: ubuntu-latest
+   env:
+     PRODUCTION: "${{ inputs.production }}"
+     BUILD_NUMBER: "${{ github.run_number }}"
+     REGISTRY: quay.io/csiblock/
+     PROD_REPOSITORY: volume-group-opreator
+     STAGING_REPOSITORY: volume-group-opreator-staging
+     IMAGE_VERSION: '1.11.0'
+   steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.2.0
+      - uses: FranzDiebold/github-env-vars-action@v2.7.0
+      - name: Setup dependencies
+        id: setup_dependencies
+        run: |
+          build/ci/github_actions/setup_ci_dependencies.sh
+   outputs:
+     volume_group_image_specific_tag: "${{ steps.setup_dependencies.outputs.volume_group_image_specific_tag }}"
+     volume_group_image_branch_tag: "${{ steps.setup_dependencies.outputs.volume_group_image_branch_tag }}"
+
   build_and_push_images:
     name: "Build and push images"
     runs-on: ubuntu-latest
-    env:
-      REGISTRY: quay.io/csiblock
-      PROD_REPOSITORY: '$REGISTRY/volume-group-opreator:v1'
-      STAGING_REPOSITORY: '$REGISTRY/volume-group-opreator-staging:'
+    needs:
+      - prepare_env
     steps:
       - name: Checkout
         uses: actions/checkout@v3.2.0
@@ -28,7 +48,6 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2.2.1
-      - uses: FranzDiebold/github-env-vars-action@v2.7.0
       - name: Build and push volume-group-operator
         uses: docker/build-push-action@v3.2.0
         with:
@@ -36,8 +55,8 @@ jobs:
           platforms: linux/amd64,linux/ppc64le,linux/s390x
           push: false
           tags: |
-            ${{ inputs.production == 'true' ? env.PROD_REPOSITORY : env.STAGING_REPOSITORY + github.sha }}
-            ${{ github.ref_name == 'develop' ? env.STAGING_REPOSITORY + 'latest' }}
+            ${{ needs.prepare_env.outputs.volume_group_image_specific_tag }}
+            ${{ needs.prepare_env.outputs.volume_group_image_branch_tag }}
           file: Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
