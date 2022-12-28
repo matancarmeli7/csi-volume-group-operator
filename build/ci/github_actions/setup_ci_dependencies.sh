@@ -9,20 +9,18 @@ specific_tag="${image_version}_b${build_number}_${commit_hash}_${triggering_bran
 
 
 if [ "$triggering_branch" == "develop" ]; then
-  branch_tag=latest
+  global_tag=latest
 else
-  branch_tag=${triggering_branch}
+  global_tag=${triggering_branch}
 fi
 
 if [ "$PRODUCTION" = true ]; then
   repository=${PROD_REPOSITORY}
-  branch_tag=${image_version}
+  global_tag=${image_version}
 else
   repository=${STAGING_REPOSITORY}
 fi
 
-#echo "volume_group_image_specific_tag=${volume_group_image_specific_tag}" >> $GITHUB_OUTPUT
-#echo "volume_group_image_branch_tag=${volume_group_image_branch_tag}" >> $GITHUB_OUTPUT
 echo "repository=${repository}" >> $GITHUB_OUTPUT
 echo "specific_tag=${specific_tag}" >> $GITHUB_OUTPUT
-echo "branch_tag=${branch_tag}" >> $GITHUB_OUTPUT
+echo "global_tag=${global_tag}" >> $GITHUB_OUTPUT

@@ -16,6 +16,8 @@ on:
         default: false
         type: boolean
         required: false
+env:
+  IMAGE_VERSION: '1.11.0'
 jobs:
   prepare_env: 
     name: "Prepare env"
@@ -25,7 +27,6 @@ jobs:
       BUILD_NUMBER: "${{ github.run_number }}"
       PROD_REPOSITORY: volume-group-operator
       STAGING_REPOSITORY: volume-group-operator-staging
-      IMAGE_VERSION: '1.11.0'
     steps:
        - name: Checkout code
          uses: actions/checkout@v3.2.0
@@ -37,7 +38,7 @@ jobs:
     outputs:
       repository: "${{ steps.setup_dependencies.outputs.repository }}"
       specific_tag: "${{ steps.setup_dependencies.outputs.specific_tag }}"
-      branch_tag: "${{ steps.setup_dependencies.outputs.branch_tag }}"
+      global_tag: "${{ steps.setup_dependencies.outputs.global_tag }}"
 
   build_and_push_images:
     name: "Build and push images"
@@ -61,7 +62,7 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }}
           tags: |
-            type=raw,value=${{ needs.prepare_env.outputs.branch_tag }}
+            type=raw,value=${{ needs.prepare_env.outputs.global_tag }}
             type=raw,value=${{ needs.prepare_env.outputs.specific_tag }}
           labels: |
             commit=${{ github.sha }}
@@ -82,11 +83,14 @@ jobs:
           file: Dockerfile
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            VERSION: ${{ env.IMAGE_VERSION }}
+            BUILD_NUMBER: ${{ github.run_number }}
       - name: save image names
         run: |
           echo ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }} >> /tmp/images.txt
           echo ${{ needs.prepare_env.outputs.specific_tag }} >> /tmp/images.txt
-          echo ${{ needs.prepare_env.outputs.branch_tag }} >> /tmp/images.txt
+          echo ${{ needs.prepare_env.outputs.global_tag }} >> /tmp/images.txt
       - uses: actions/upload-artifact@v3
         with:
           name: images
