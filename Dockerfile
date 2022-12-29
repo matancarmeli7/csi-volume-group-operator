@@ -38,6 +38,8 @@ LABEL name="IBM volume group operator" \
     io.k8s.description="The IBM volume group operator enables container orchestrators to use volumeGroup object and to manage them in thier storage." \
     io.openshift.tags=ibm,csi,volume-group-operator
 
+COPY ./LICENSE /licenses/
+
 WORKDIR /
 COPY --from=builder /workspace/manager .
 USER 65532:65532
