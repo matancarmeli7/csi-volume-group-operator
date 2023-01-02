@@ -83,6 +83,10 @@ jobs:
           build-args: |
             VERSION: ${{ env.IMAGE_VERSION }}
             BUILD_NUMBER: ${{ github.run_number }}
+      - name: show chosen image
+        run: |
+          echo ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }}:${{ needs.prepare_env.outputs.specific_tag }}
+          echo ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }}:${{ needs.prepare_env.outputs.global_tag }}
       - name: save image names
         run: |
           echo ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }} >> /tmp/images.txt
