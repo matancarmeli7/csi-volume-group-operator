@@ -33,9 +33,9 @@ LABEL name="IBM volume group operator" \
     version=$VERSION \
     release=$BUILD_NUMBER \
     summary="Manages VolumeGroup objects in kubernetes and openshift" \
-    description="The IBM volume group operator enables container orchestrators to use volumeGroup object and to manage them in thier storage." \
+    description="The IBM volume group operator enables container orchestrators to use volumeGroup object and to manage them in their storage." \
     io.k8s.display-name="IBM volume group operator" \
-    io.k8s.description="The IBM volume group operator enables container orchestrators to use volumeGroup object and to manage them in thier storage." \
+    io.k8s.description="The IBM volume group operator enables container orchestrators to use volumeGroup object and to manage them in their storage." \
     io.openshift.tags=ibm,csi,volume-group-operator
 
 COPY ./LICENSE /licenses/
