@@ -55,4 +55,7 @@ var (
 	ListPersistentVolumeClaim                        = "Listing PersistentVolumeClaims"
 	VolumeGroupCreated                               = "Successfully Created  %s/%s volumeGroup"
 	VolumeGroupContentCreated                        = "Successfully Created  %s/%s volumeGroupContent"
+	RetryUpdateVolumeGroupStatus                     = "Retry update %s/%s volumeGroup status due to conflict error"
+	RetryUpdateVolumeGroupContentStatus              = "Retry update %s/%s volumeGroupContent status due to conflict error"
+	RetryUpdateFinalizer                             = "Retry update finalizer due to conflict error"
 )
