@@ -12,6 +12,8 @@ import (
 	"github.com/go-logr/logr"
 	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -24,7 +26,19 @@ func UpdateObject(client client.Client, updateObject client.Object) error {
 
 func UpdateObjectStatus(client client.Client, updateObject client.Object) error {
 	if err := client.Status().Update(context.TODO(), updateObject); err != nil {
+		if apierrors.IsConflict(err) {
+			return err
+		}
 		return fmt.Errorf("failed to update %s (%s/%s) status %w", updateObject.GetObjectKind(), updateObject.GetNamespace(), updateObject.GetName(), err)
+	}
+	return nil
+}
+
+func getNamespacedObject(client client.Client, obj client.Object) error {
+	namespacedObject := types.NamespacedName{Name: obj.GetName(), Namespace: obj.GetNamespace()}
+	err := client.Get(context.TODO(), namespacedObject, obj)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -56,6 +70,7 @@ func AddVolumesToVolumeGroup(logger logr.Logger, client client.Client, vgClient 
 
 	err := ModifyVolumeGroup(logger, client, vg, vgClient)
 	if err != nil {
+		vg.Status.PVCList = removeMultiplePVCs(vg.Status.PVCList, pvcs)
 		return err
 	}
 	logger.Info(fmt.Sprintf(messages.AddedVolumeToVolumeGroup, vg.Namespace, vg.Name))
@@ -89,6 +104,7 @@ func RemoveVolumeFromVolumeGroup(logger logr.Logger, client client.Client, vgCli
 
 	err := ModifyVolumeGroup(logger, client, vg, vgClient)
 	if err != nil {
+		vg.Status.PVCList = appendMultiplePVCs(vg.Status.PVCList, pvcs)
 		return err
 	}
 	logger.Info(fmt.Sprintf(messages.RemovedVolumeFromVolumeGroup, vg.Namespace, vg.Name))
