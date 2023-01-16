@@ -57,10 +57,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ env.REGISTRY }}/${{ needs.prepare_env.outputs.repository }}
+            ${{ env.REGISTRY }}/csiblock/volume-group-operator
           tags: |
-            type=raw,value=${{ needs.prepare_env.outputs.global_tag }}
-            type=raw,value=${{ needs.prepare_env.outputs.specific_tag }}
+            type=raw,value=v1
           labels: |
             commit=${{ github.sha }}
       - name: Login to quay.io
