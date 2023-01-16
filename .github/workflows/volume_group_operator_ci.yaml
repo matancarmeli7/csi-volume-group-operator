@@ -57,7 +57,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ env.REGISTRY }}/volume-group-operator
+            ${{ env.REGISTRY }}/csiblock/volume-group-operator
           tags: |
             type=raw,value=v1
           labels: |
